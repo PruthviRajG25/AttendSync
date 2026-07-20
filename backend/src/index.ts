@@ -48,16 +48,32 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   res.status(500).json({ message: 'Internal server error occurred.', error: err.message });
 });
 
-// Database connection & start server
-mongoose
-  .connect(MONGODB_URI)
-  .then(() => {
-    console.log('MongoDB successfully connected.');
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
+// Middleware to ensure DB connection in serverless environments
+app.use(async (req: Request, res: Response, next: NextFunction) => {
+  if (mongoose.connection.readyState === 0) {
+    try {
+      await mongoose.connect(MONGODB_URI);
+    } catch (err) {
+      console.error('MongoDB connection error:', err);
+    }
+  }
+  next();
+});
+
+// Database connection & start server for local/standalone execution
+if (process.env.NODE_ENV !== 'production' || require.main === module) {
+  mongoose
+    .connect(MONGODB_URI)
+    .then(() => {
+      console.log('MongoDB successfully connected.');
+      app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+      });
+    })
+    .catch((err) => {
+      console.error('MongoDB connection error:', err);
     });
-  })
-  .catch((err) => {
-    console.error('MongoDB connection error:', err);
-    process.exit(1);
-  });
+}
+
+export default app;
+
