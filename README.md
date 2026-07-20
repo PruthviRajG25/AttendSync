@@ -5,7 +5,7 @@
   <img src="logo.png" width="180" alt="Attend Sync System Logo" style="border-radius: 24px; margin-bottom: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);" />
 
   <h1><b>ATTEND SYNC SYSTEM</b></h1>
-  <h3>Smart Attendance Tracker & Bunk Planner</h3>
+  <h3>Smart Attendance Tracker </h3>
 
   ![AttendSync Banner](https://img.shields.io/badge/AttendSync-Smart%20Attendance%20Tracker-6366f1?style=for-the-badge&logo=react&logoColor=white)
 
