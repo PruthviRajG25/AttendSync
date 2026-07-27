@@ -6,6 +6,16 @@ import { Card, CardContent, Button, Dialog, Select, useToast } from '../../compo
 import { api } from '../../lib/api';
 import { CalendarDays, Plus, Trash2, Loader2, Sparkles } from 'lucide-react';
 
+const timeSlotOptions = [
+  { value: '09:00 AM - 10:00 AM', label: '09:00 AM - 10:00 AM' },
+  { value: '10:00 AM - 11:00 AM', label: '10:00 AM - 11:00 AM' },
+  { value: '11:00 AM - 12:00 PM', label: '11:00 AM - 12:00 PM' },
+  { value: '12:00 PM - 01:00 PM', label: '12:00 PM - 01:00 PM' },
+  { value: '01:00 PM - 02:00 PM', label: '01:00 PM - 02:00 PM' },
+  { value: '02:00 PM - 03:00 PM', label: '02:00 PM - 03:00 PM' },
+  { value: '03:00 PM - 04:00 PM', label: '03:00 PM - 04:00 PM' },
+];
+
 export default function TimetablePage() {
   const { toast } = useToast();
   const [timetableSlots, setTimetableSlots] = useState([]);
@@ -17,7 +27,7 @@ export default function TimetablePage() {
 
   // Form states
   const [day, setDay] = useState('Monday');
-  const [timeSlot, setTimeSlot] = useState('09:00 AM - 10:00 AM');
+  const [timeSlot, setTimeSlot] = useState('');
   const [subjectId, setSubjectId] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
@@ -41,10 +51,27 @@ export default function TimetablePage() {
     fetchTimetableData();
   }, []);
 
+  // Update selected time slot based on selected day and booked slots
+  useEffect(() => {
+    const booked = timetableSlots
+      .filter((s) => s.day === day)
+      .map((s) => s.timeSlot);
+    const available = timeSlotOptions.filter((opt) => !booked.includes(opt.value));
+    if (available.length > 0) {
+      setTimeSlot(available[0].value);
+    } else {
+      setTimeSlot('');
+    }
+  }, [day, timetableSlots]);
+
   const handleCreateSlot = async (e) => {
     e.preventDefault();
     if (!subjectId) {
       toast('Please select a subject.', 'error');
+      return;
+    }
+    if (!timeSlot) {
+      toast('No available time slot selected.', 'error');
       return;
     }
     setSubmitting(true);
@@ -54,7 +81,7 @@ export default function TimetablePage() {
       setCreateOpen(false);
       fetchTimetableData();
     } catch (error) {
-      toast(error.message || 'Failed to add timetable slot.', 'error');
+      toast(error.message || 'Duplicate entry for the same day and time slot. Please choose a different time slot or day.', 'error');
     } finally {
       setSubmitting(false);
     }
@@ -78,15 +105,13 @@ export default function TimetablePage() {
       .sort((a, b) => a.timeSlot.localeCompare(b.timeSlot));
   };
 
-  const timeSlotOptions = [
-    { value: '09:00 AM - 10:00 AM', label: '09:00 AM - 10:00 AM' },
-    { value: '10:00 AM - 11:00 AM', label: '10:00 AM - 11:00 AM' },
-    { value: '11:00 AM - 12:00 PM', label: '11:00 AM - 12:00 PM' },
-    { value: '12:00 PM - 01:00 PM', label: '12:00 PM - 01:00 PM' },
-    { value: '01:00 PM - 02:00 PM', label: '01:00 PM - 02:00 PM' },
-    { value: '02:00 PM - 03:00 PM', label: '02:00 PM - 03:00 PM' },
-    { value: '03:00 PM - 04:00 PM', label: '03:00 PM - 04:00 PM' },
-  ];
+  // Get available slots for the form
+  const bookedSlotsForSelectedDay = timetableSlots
+    .filter((s) => s.day === day)
+    .map((s) => s.timeSlot);
+  const availableTimeSlotOptions = timeSlotOptions.filter(
+    (opt) => !bookedSlotsForSelectedDay.includes(opt.value)
+  );
 
   if (loading) {
     return (
@@ -188,12 +213,18 @@ export default function TimetablePage() {
                 options={daysOfWeek.map((d) => ({ value: d, label: d }))}
               />
 
-              <Select
-                label="Select Time Slot"
-                value={timeSlot}
-                onChange={(e) => setTimeSlot(e.target.value)}
-                options={timeSlotOptions}
-              />
+              {availableTimeSlotOptions.length === 0 ? (
+                <div className="p-3.5 text-xs font-semibold text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-xl text-center select-none">
+                  All time slots are booked for {day}.
+                </div>
+              ) : (
+                <Select
+                  label="Select Time Slot"
+                  value={timeSlot}
+                  onChange={(e) => setTimeSlot(e.target.value)}
+                  options={availableTimeSlotOptions}
+                />
+              )}
 
               <Select
                 label="Associated Subject"
@@ -206,7 +237,7 @@ export default function TimetablePage() {
                 <Button type="button" variant="secondary" onClick={() => setCreateOpen(false)}>
                   Cancel
                 </Button>
-                <Button type="submit" variant="primary" disabled={submitting}>
+                <Button type="submit" variant="primary" disabled={submitting || !timeSlot}>
                   {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Add Slot'}
                 </Button>
               </div>

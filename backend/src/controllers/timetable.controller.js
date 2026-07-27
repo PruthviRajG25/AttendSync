@@ -18,6 +18,18 @@ export const createSlot = async (req, res) => {
       return;
     }
 
+    // Check if slot already exists for this user on the same day and time slot
+    const existingSlot = await Timetable.findOne({
+      userId: req.userId,
+      day,
+      timeSlot,
+    });
+
+    if (existingSlot) {
+      res.status(400).json({ message: 'This time slot is already booked on this day.' });
+      return;
+    }
+
     const newSlot = new Timetable({
       userId: req.userId,
       day,

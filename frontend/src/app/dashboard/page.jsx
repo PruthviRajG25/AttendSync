@@ -50,7 +50,8 @@ export default function DashboardPage() {
     setActionLoadingId(`${subjectId}-${status}`);
     try {
       await api.quickUpdateLog({ subjectId, status });
-      toast('Attendance logged successfully!', 'success');
+      // toast('Attendance logged successfully!', 'success',1.0);
+      toast("Attendance logged successfully!",'success')
       await fetchDashboardData();
     } catch (error) {
       toast(error.message || 'Failed to log attendance.', 'error');
@@ -219,6 +220,7 @@ export default function DashboardPage() {
             <CardContent className="p-6">
               <div className="mb-4">
                 <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">Quick Log Attendance</h3>
+                {/* <p classname="text-[11px] text-zinc-400">Update in 1 click for 1 day</p> */}
                 <p className="text-[11px] text-zinc-400">Update today's status in a single click</p>
               </div>
               <div className="space-y-3 overflow-y-auto max-h-64 pr-1">
@@ -264,7 +266,7 @@ export default function DashboardPage() {
 
         </div>
 
-        {/* Notifications and Subject Wise Attendance */}
+        Notifications and Subject Wise Attendance
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
           {/* Notifications */}

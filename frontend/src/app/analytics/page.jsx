@@ -255,7 +255,7 @@ export default function AnalyticsPage() {
             <CardContent className="p-6">
               <div className="mb-6">
                 <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">Attendance Activity Heatmap</h3>
-                <p className="text-[11px] text-zinc-400">GitHub-style activity tracking grid (last 16 weeks)</p>
+                <p className="text-[11px] text-zinc-400"> Activity tracking grid (last 16 weeks)</p>
               </div>
 
               <div className="flex flex-col gap-4">
