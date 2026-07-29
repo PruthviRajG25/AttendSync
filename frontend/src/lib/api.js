@@ -1,6 +1,6 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 
   (typeof window !== 'undefined' && !window.location.hostname.includes('localhost') 
-    ? '/api/backend' 
+    ? '/api' 
     : 'http://localhost:5000/api');
 
 const getHeaders = () => {
