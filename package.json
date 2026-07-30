@@ -12,6 +12,9 @@
     "start": "npm run start --prefix frontend"
   },
   "dependencies": {
+    "@swc/helpers": "^0.5.23",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "caniuse-lite": "^1.0.30001806",
     "next": "16.2.10"
   },
   "devDependencies": {
