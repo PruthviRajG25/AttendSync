@@ -1,10 +1,10 @@
-# 📅 AttendSync — Smart Attendance & Bunk Planner
+# 📅 AttendSync — Smart Attendance  Planner
 
 <div align="center">
   <img src="./logo.png" width="160" alt="AttendSync Logo" style="border-radius: 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.15);" />
   
   <p align="center">
-    A premium, full-stack Next.js and Express application designed to track college class attendance, schedule timetables, analyze attendance trends, and dynamically calculate bunk requirements.
+    A premium, full-stack Next.js and Express application designed to track college class attendance, schedule timetables, analyze attendance trends, and dynamically calculate attendance requirements.
   </p>
 
  <h1><a src>📽️video demo<a></h1>
