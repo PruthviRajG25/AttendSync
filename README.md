@@ -1,4 +1,4 @@
-# 📅 AttendSync — Smart Attendance  Planner
+# 🗓️ AttendSync — Smart Attendance  Planner
 
 <div align="center">
   <img src="./logo.png" width="160" alt="AttendSync Logo" style="border-radius: 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.15);" />
