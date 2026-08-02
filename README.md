@@ -7,7 +7,7 @@
     A premium, full-stack Next.js and Express application designed to track college class attendance, schedule timetables, analyze attendance trends, and dynamically calculate attendance requirements.
   </p>
 
- <h1><a src>📽️video demo<a></h1>
+ <h1><a src="">📽️video demo<a></h1>
 </div>
 
 ---
